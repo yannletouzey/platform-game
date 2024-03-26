@@ -1,4 +1,4 @@
-export default class Platform {
+export default class Ground {
   constructor(ctx, x, y, img) {
     this.pos = { x, y };
     this.ctx = ctx;

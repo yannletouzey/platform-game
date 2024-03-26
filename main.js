@@ -1,8 +1,12 @@
 import Platform from "./Platform";
 import keys from "./keys";
 import Player from "./Player";
+import Ground from "./Ground";
+import createImage from "./tools";
 import groundImg from "/assets/img/platform.png";
 import platformImg from "/assets/img/platformSmallTall.png";
+import hillsImg from "/assets/img/background.png";
+import backgroundImg from "/assets/img/background.png";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -36,21 +40,20 @@ const gravity = 1
 let distance = 0
 
 // Textures
-const groundTexture = new Image()
-groundTexture.src = groundImg
-const platformTexture = new Image()
-platformTexture.src = platformImg
+const hillsTexture = createImage(hillsImg)
+const backgroundTexture = createImage(backgroundImg)
 
 // Objects
 const player = new Player(ctx, gravity)
 const platforms = [
-  new Platform(ctx, 400, 200, 200, 100, platformTexture),
-  new Platform(ctx, 800, 300, 400, 100, platformTexture),
-  new Platform(ctx, 1200, 400, 200, 100, platformTexture),
-  new Platform(ctx, 1600, 500, 200, 100, platformTexture),
-  new Platform(ctx, 2000, 600, 200, 100, platformTexture),
+  new Platform(ctx, 400, 200, createImage(platformImg)),
+  new Platform(ctx, 400 + createImage(platformImg).width - 3, 200, createImage(platformImg)),
+  new Platform(ctx, 800, 300, createImage(platformImg)),
+  new Platform(ctx, 1200, 400, createImage(platformImg)),
+  new Platform(ctx, 1600, 500, createImage(platformImg)),
+  new Platform(ctx, 2000, 600, createImage(platformImg)),
 ]
-const ground = new Platform(ctx, 100, canvas.height - 20, 500, 20, groundTexture)
+const ground = new Ground(ctx, 0, canvas.height - createImage(groundImg).height, createImage(groundImg))
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
