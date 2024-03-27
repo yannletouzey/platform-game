@@ -22,7 +22,7 @@ canvas {
   display: none;
 }
 .start {
-  --blue: #3498db;
+  --blue: #b434db;
   position: absolute;
   z-index: 10;
   left: 50%;
@@ -47,7 +47,6 @@ canvas {
   text-transform: uppercase;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-
   color: #fff;
   box-shadow: 0 0 40px 40px var(--blue) inset, 0 0 0 0 var(--blue);
   transition: 

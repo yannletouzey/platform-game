@@ -12,6 +12,7 @@ export default class Player {
       x: 0,
       y: 1
     }
+    this.speed = 5
   }
   draw() {
     this.ctx.fillStyle = 'red'

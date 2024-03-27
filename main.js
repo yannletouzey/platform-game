@@ -48,26 +48,9 @@ let distance = 0
 // Objects
 let player = new Player(ctx, gravity)
 let background = new Background(ctx, 0, 0, createImage(backgroundImg))
-
-let platforms = [
-  new Platform(ctx, 400, 200, createImage(platformImg)),
-  new Platform(ctx, 400 + createImage(platformImg).width, 200, createImage(platformImg)),
-  new Platform(ctx, 800, 300, createImage(platformImg)),
-  new Platform(ctx, 1200, 400, createImage(platformImg)),
-  new Platform(ctx, 1600, 500, createImage(platformImg)),
-  new Platform(ctx, 2000, 600, createImage(platformImg)),
-]
-
-let grounds = [
-  new Ground(ctx, 0, canvas.height - createImage(groundImg).height, createImage(groundImg)),
-  new Ground(ctx, createImage(groundImg).width - 1, canvas.height - createImage(groundImg).height, createImage(groundImg))
-]
-
-let hills = [
-  new Hill(ctx, innerWidth - (createImage(hillsImg2).width * 1.5), innerHeight - (createImage(hillsImg2).height * 1.5), createImage(hillsImg2).width * 1.5, createImage(hillsImg2).height * 1.5, createImage(hillsImg2)),
-  new Hill(ctx, 500, innerHeight - (createImage(hillsImg3).height * 1.2), createImage(hillsImg3).width * 1.2, createImage(hillsImg3).height * 1.2, createImage(hillsImg3)),
-  new Hill(ctx, 50, innerHeight - createImage(hillsImg1).height, createImage(hillsImg1).width, createImage(hillsImg1).height, createImage(hillsImg1)),
-]
+let platforms = []
+let grounds = []
+let hills = []
 
 function init() {
   // Variables
@@ -106,37 +89,36 @@ function animate() {
   requestAnimationFrame(animate)
   background.draw()
   hills.forEach((hill) => hill.draw())
-  
   if (keys.right.pressed && player.position.x < (canvas.width / 2) - player.width) {
-    player.velocity.x = 5
-  } else if (keys.left.pressed && player.position.x > 100) {
-    player.velocity.x = -5
+    player.velocity.x = player.speed
+  } else if ((keys.left.pressed && player.position.x > 200) || (keys.left.pressed && distance === 0 && player.position.x > 0)) {
+    player.velocity.x = -player.speed
   } else {
     player.velocity.x = 0
     if (keys.right.pressed && distance < sizeGame) {
-      distance += 5
-      platforms.forEach((platform, i) => {
-        platform.pos.x -= 5
-      })
-      grounds.forEach((ground, i) => {
-        ground.pos.x -= 5
-      })
-      background.pos.x -= 0.5
-      hills[0].pos.x -= 0.5
-      hills[1].pos.x -= 1
-      hills[2].pos.x -= 2
-    } else if (keys.left.pressed && distance >= 5 && player.position.x > 0) {
-      distance -= 5
+      distance += player.speed
       platforms.forEach((platform) => {
-        platform.pos.x += 5
+        platform.pos.x -= player.speed
       })
       grounds.forEach((ground) => {
-        ground.pos.x += 5
+        ground.pos.x -= player.speed
       })
-      background.pos.x += 0.5
-      hills[0].pos.x += 0.5
-      hills[1].pos.x += 1
-      hills[2].pos.x += 2
+      background.pos.x -= player.speed / 10
+      hills[0].pos.x -= player.speed / 10
+      hills[1].pos.x -= player.speed / 3
+      hills[2].pos.x -= player.speed / 2
+    } else if (keys.left.pressed && distance >= 5) {
+      distance -= 5
+      platforms.forEach((platform) => {
+        platform.pos.x += player.speed
+      })
+      grounds.forEach((ground) => {
+        ground.pos.x += player.speed
+      })
+      background.pos.x += player.speed / 10
+      hills[0].pos.x += player.speed / 10
+      hills[1].pos.x += player.speed / 3
+      hills[2].pos.x += player.speed / 2
     }
   }
 
@@ -155,17 +137,23 @@ function animate() {
       player.velocity.y = 0
     }
   })
-  player.update()
   if (player.position.y > canvas.height) {
-    blur.style.display = 'block'
-    startButton.style.display = 'block'
+    setTimeout(() => {
+      blur.style.display = 'block'
+      startButton.style.display = 'block'
+    }, 400)
+  } else {
+    blur.style.display = 'none'
+    startButton.style.display = 'none'
   }
+  player.update()
 }
 startButton.addEventListener('click', () => {
   blur.style.display = 'none'
   startButton.style.display = 'none'
   init()
 })
+init()
 animate()
 
 
