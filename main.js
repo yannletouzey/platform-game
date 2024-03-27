@@ -23,22 +23,6 @@ addEventListener('resize', () => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
 })
-addEventListener('dblclick', ()=>{
-    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
-    if (!fullscreenElement) {
-        if (canvas.requestFullscreen) {
-            canvas.requestFullscreen()
-        } else if (canvas.webkitRequestFullscreen){
-            canvas.webkitRequestFullscreen()
-        }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen()
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen()
-        }
-    }
-})
 
 // Variables
 let sizeGame = 2000
@@ -162,9 +146,15 @@ addEventListener('keydown', ({ keyCode }) => {
   switch (keyCode) {
     case 37: case 65: // left
       keys.left.pressed = true
+      player.currentSprite = player.sprites.run.left
+      player.currentCropWidth = player.sprites.run.cropWidth
+      player.width = player.sprites.run.size.w
       break;
     case 39: case 68: // right
       keys.right.pressed = true
+      player.currentSprite = player.sprites.run.right
+      player.currentCropWidth = player.sprites.run.cropWidth
+      player.width = player.sprites.run.size.w
       break;
     case 38: case 87: // up
       player.velocity.y -= 20
@@ -181,9 +171,15 @@ addEventListener('keyup', ({ keyCode }) => {
   switch (keyCode) {
     case 37: case 65: // left
       keys.left.pressed = false
+      player.currentSprite = player.sprites.stand.left
+      player.currentCropWidth = player.sprites.stand.cropWidth
+      player.width = player.sprites.stand.size.w
       break;
     case 39: case 68: // right 
       keys.right.pressed = false
+      player.currentSprite = player.sprites.stand.right
+      player.currentCropWidth = player.sprites.stand.cropWidth
+      player.width = player.sprites.stand.size.w
       break;
     case 38: case 87: // up
       player.velocity.y = 0
