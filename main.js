@@ -14,6 +14,8 @@ import backgroundImg from "/assets/img/background.png";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const startButton = document.getElementById('start');
+const blur = document.querySelector('.blur');
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -39,15 +41,15 @@ addEventListener('dblclick', ()=>{
 })
 
 // Variables
-const sizeGame = 2000
-const gravity = .9
+let sizeGame = 2000
+let gravity = .9
 let distance = 0
 
 // Objects
-const player = new Player(ctx, gravity)
-const background = new Background(ctx, 0, 0, createImage(backgroundImg))
+let player = new Player(ctx, gravity)
+let background = new Background(ctx, 0, 0, createImage(backgroundImg))
 
-const platforms = [
+let platforms = [
   new Platform(ctx, 400, 200, createImage(platformImg)),
   new Platform(ctx, 400 + createImage(platformImg).width, 200, createImage(platformImg)),
   new Platform(ctx, 800, 300, createImage(platformImg)),
@@ -56,16 +58,47 @@ const platforms = [
   new Platform(ctx, 2000, 600, createImage(platformImg)),
 ]
 
-const grounds = [
+let grounds = [
   new Ground(ctx, 0, canvas.height - createImage(groundImg).height, createImage(groundImg)),
   new Ground(ctx, createImage(groundImg).width - 1, canvas.height - createImage(groundImg).height, createImage(groundImg))
 ]
 
-const hills = [
+let hills = [
   new Hill(ctx, innerWidth - (createImage(hillsImg2).width * 1.5), innerHeight - (createImage(hillsImg2).height * 1.5), createImage(hillsImg2).width * 1.5, createImage(hillsImg2).height * 1.5, createImage(hillsImg2)),
   new Hill(ctx, 500, innerHeight - (createImage(hillsImg3).height * 1.2), createImage(hillsImg3).width * 1.2, createImage(hillsImg3).height * 1.2, createImage(hillsImg3)),
   new Hill(ctx, 50, innerHeight - createImage(hillsImg1).height, createImage(hillsImg1).width, createImage(hillsImg1).height, createImage(hillsImg1)),
 ]
+
+function init() {
+  // Variables
+  sizeGame = 2000
+  gravity = .9
+  distance = 0
+
+  // Objects
+  player = new Player(ctx, gravity)
+  background = new Background(ctx, 0, 0, createImage(backgroundImg))
+
+  platforms = [
+    new Platform(ctx, 400, 200, createImage(platformImg)),
+    new Platform(ctx, 400 + createImage(platformImg).width, 200, createImage(platformImg)),
+    new Platform(ctx, 800, 300, createImage(platformImg)),
+    new Platform(ctx, 1200, 400, createImage(platformImg)),
+    new Platform(ctx, 1600, 500, createImage(platformImg)),
+    new Platform(ctx, 2000, 600, createImage(platformImg)),
+  ]
+
+  grounds = [
+    new Ground(ctx, 0, canvas.height - createImage(groundImg).height, createImage(groundImg)),
+    new Ground(ctx, createImage(groundImg).width - 1, canvas.height - createImage(groundImg).height, createImage(groundImg))
+  ]
+
+  hills = [
+    new Hill(ctx, innerWidth - (createImage(hillsImg2).width * 1.5), innerHeight - (createImage(hillsImg2).height * 1.5), createImage(hillsImg2).width * 1.5, createImage(hillsImg2).height * 1.5, createImage(hillsImg2)),
+    new Hill(ctx, 500, innerHeight - (createImage(hillsImg3).height * 1.2), createImage(hillsImg3).width * 1.2, createImage(hillsImg3).height * 1.2, createImage(hillsImg3)),
+    new Hill(ctx, 50, innerHeight - createImage(hillsImg1).height, createImage(hillsImg1).width, createImage(hillsImg1).height, createImage(hillsImg1)),
+  ]
+}
 
 // Animation Render
 function animate() {
@@ -73,6 +106,7 @@ function animate() {
   requestAnimationFrame(animate)
   background.draw()
   hills.forEach((hill) => hill.draw())
+  
   if (keys.right.pressed && player.position.x < (canvas.width / 2) - player.width) {
     player.velocity.x = 5
   } else if (keys.left.pressed && player.position.x > 100) {
@@ -122,10 +156,18 @@ function animate() {
     }
   })
   player.update()
+  if (player.position.y > canvas.height) {
+    blur.style.display = 'block'
+    startButton.style.display = 'block'
+  }
 }
-onload = () => {
-  animate()
-}
+startButton.addEventListener('click', () => {
+  blur.style.display = 'none'
+  startButton.style.display = 'none'
+  init()
+})
+animate()
+
 
 // keyboard controller
 addEventListener('keydown', ({ keyCode }) => {
