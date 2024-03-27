@@ -138,10 +138,10 @@ function animate() {
     }
   })
   if (player.position.y > canvas.height) {
-    setTimeout(() => {
-      blur.style.display = 'block'
-      startButton.style.display = 'block'
-    }, 400)
+    setTimeout
+    blur.style.display = 'block'
+    startButton.style.display = 'block'
+    player.velocity.y = 0
   } else {
     blur.style.display = 'none'
     startButton.style.display = 'none'
