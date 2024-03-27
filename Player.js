@@ -19,7 +19,7 @@ export default class Player {
       stand: {
         left: createImage(spriteStandLeftImg),
         right: createImage(spriteStandRightImg),
-        cropWidth: 177,
+        cropWidth: createImage(spriteStandRightImg).width / 60,
         size: {
           w: 66,
           h: 150
@@ -28,7 +28,7 @@ export default class Player {
       run: {
         left: createImage(spriteRunLeftImg),
         right: createImage(spriteRunRightImg),
-        cropWidth: 341,
+        cropWidth: createImage(spriteRunRightImg).width / 30,
         size: {
           w: 127.875,
           h: 150
@@ -53,11 +53,12 @@ export default class Player {
     )
   }
   update() {
-    this.draw()
     this.frames++
+    
     if (this.frames >= 60 && (this.currentSprite === this.sprites.stand.right || this.currentSprite === this.sprites.stand.left)) this.frames = 0
     else if (this.frames >= 30 && (this.currentSprite === this.sprites.run.right || this.currentSprite === this.sprites.run.left)) this.frames = 0
     
+    this.draw()
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
     if (this.position.y + this.height + this.velocity.y <= canvas.height) 

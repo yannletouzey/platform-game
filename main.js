@@ -23,8 +23,9 @@ addEventListener('resize', () => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
 })
-
 // Variables
+let currentKey = ''
+let lastKey = ''
 let sizeGame = 2000
 let gravity = .9
 let distance = 0
@@ -121,6 +122,29 @@ function animate() {
       player.velocity.y = 0
     }
   })
+
+  if (keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
+    player.frames = 1
+    player.currentSprite = player.sprites.run.right
+    player.currentCropWidth = player.sprites.run.cropWidth
+    player.width = player.sprites.run.size.w
+  } else if (keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
+    player.frames = 1
+    player.currentSprite = player.sprites.run.left
+    player.currentCropWidth = player.sprites.run.cropWidth
+    player.width = player.sprites.run.size.w
+  } else if (!keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.stand.left) {
+    player.frames = 1
+    player.currentSprite = player.sprites.stand.left
+    player.currentCropWidth = player.sprites.stand.cropWidth
+    player.width = player.sprites.stand.size.w
+  } else if (!keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.stand.right) {
+    player.frames = 1
+    player.currentSprite = player.sprites.stand.right
+    player.currentCropWidth = player.sprites.stand.cropWidth
+    player.width = player.sprites.stand.size.w
+  }
+
   if (player.position.y > canvas.height) {
     setTimeout
     blur.style.display = 'block'
@@ -146,15 +170,11 @@ addEventListener('keydown', ({ keyCode }) => {
   switch (keyCode) {
     case 37: case 65: // left
       keys.left.pressed = true
-      player.currentSprite = player.sprites.run.left
-      player.currentCropWidth = player.sprites.run.cropWidth
-      player.width = player.sprites.run.size.w
+      lastKey = 'left'
       break;
     case 39: case 68: // right
       keys.right.pressed = true
-      player.currentSprite = player.sprites.run.right
-      player.currentCropWidth = player.sprites.run.cropWidth
-      player.width = player.sprites.run.size.w
+      lastKey = 'right'
       break;
     case 38: case 87: // up
       player.velocity.y -= 20
@@ -171,15 +191,15 @@ addEventListener('keyup', ({ keyCode }) => {
   switch (keyCode) {
     case 37: case 65: // left
       keys.left.pressed = false
-      player.currentSprite = player.sprites.stand.left
-      player.currentCropWidth = player.sprites.stand.cropWidth
-      player.width = player.sprites.stand.size.w
+      // player.currentSprite = player.sprites.stand.left
+      // player.currentCropWidth = player.sprites.stand.cropWidth
+      // player.width = player.sprites.stand.size.w
       break;
     case 39: case 68: // right 
       keys.right.pressed = false
-      player.currentSprite = player.sprites.stand.right
-      player.currentCropWidth = player.sprites.stand.cropWidth
-      player.width = player.sprites.stand.size.w
+      // player.currentSprite = player.sprites.stand.right
+      // player.currentCropWidth = player.sprites.stand.cropWidth
+      // player.width = player.sprites.stand.size.w
       break;
     case 38: case 87: // up
       player.velocity.y = 0
