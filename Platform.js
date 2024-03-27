@@ -1,4 +1,10 @@
 export default class Platform {
+  /**
+   * @param {CanvasRenderingContext2D} ctx 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {HTMLImageElement} img 
+   */
   constructor(ctx, x, y, img) {
     this.pos = { x, y };
     this.ctx = ctx;
