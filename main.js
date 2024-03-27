@@ -123,7 +123,9 @@ function animate() {
   })
   player.update()
 }
-animate()
+onload = () => {
+  animate()
+}
 
 // keyboard controller
 addEventListener('keydown', ({ keyCode }) => {
